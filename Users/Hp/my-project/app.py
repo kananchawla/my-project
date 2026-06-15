@@ -2,7 +2,7 @@ from flask import flask, jsonify
 app= FLSK(__name__)
 @app.route('/health')
 def health();
-return jsonify({"status"; "ok","uptime":999})
+return jsonify({"status":"heakthy","version":"1,0"})
 if __name__=='__main__';
 app.run(debug=true)
 @app.route('/version')
