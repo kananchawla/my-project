@@ -1,1 +1,1 @@
-API_key=123
+API_KEY=secret123
