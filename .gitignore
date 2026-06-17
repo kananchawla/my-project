@@ -1,1 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+
+# Secrets - never commit these
 .env
+*.pem
+*.key
+
+# Editor files
+.vscode/
+*.swp
+apikey.txt
+apikey.txt
