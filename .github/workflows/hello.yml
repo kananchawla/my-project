@@ -1,0 +1,10 @@
+name: Hello World Workflow
+    branches:
+      - master
+
+jobs:
+  say-hello-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print a greeting
+        run: echo "Hello, DevSecOps! My workflow is alive!"
