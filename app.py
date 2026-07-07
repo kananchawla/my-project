@@ -9,8 +9,11 @@ def home():
 
 
 @app.route("/health")
-def health():  # It is good practice to name the function
-    return jsonify({"uptime": 999, "version": "1.0"})
+def health():
+    return jsonify({
+        "uptime": 999,
+        "version": "1.0"
+    })
 
 
 if __name__ == "__main__":
