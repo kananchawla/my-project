@@ -158,7 +158,7 @@ jobs:
 
             --severity-level high \
 
-            --confidence-level medium \
+            --confidence-level high \
 
             -f txt \
 
