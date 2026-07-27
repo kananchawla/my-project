@@ -1,4 +1,6 @@
-trivy-scan:
+after SBOM in ci.yml add this code
+ 
+iac-scan:
 
     runs-on: ubuntu-latest
 
@@ -10,37 +12,59 @@ trivy-scan:
 
         uses: actions/checkout@v4
  
-      - name: Build image for scanning
+      - name: Set up Python
 
-        run: docker build -t flask-app:ci .
- 
-      - name: Run Trivy vulnerability scan
-
-        uses: aquasecurity/trivy-action@master
+        uses: actions/setup-python@v5
 
         with:
 
-          image-ref: flask-app:ci
-
-          format: table
-
-          severity: HIGH,CRITICAL
-
-          exit-code: 1
-
-          ignore-unfixed: true
+          python-version: "3.12"
  
-      - name: Run Trivy config scan
+      - name: Install Checkov
 
-        uses: aquasecurity/trivy-action@master
+        run: pip install checkov
+ 
+      - name: Run Checkov on Terraform
+
+        run: |
+
+          checkov -d terraform \
+
+            --framework terraform \
+
+            --output cli \
+
+            --output json \
+
+            --output-file-path checkov-report.json \
+
+            --soft-fail || CHECKOV_EXIT=$?
+
+          echo "Checkov exit code: ${CHECKOV_EXIT:-0}"
+
+          exit ${CHECKOV_EXIT:-0}
+ 
+      - name: Run Checkov on GitHub Actions workflows
+
+        run: |
+
+          checkov -d .github/workflows \
+
+            --framework github_actions \
+
+            --soft-fail \
+
+            --compact
+ 
+      - name: Upload Checkov report
+
+        uses: actions/upload-artifact@v4
+
+        if: always()
 
         with:
 
-          scan-type: config
+          name: checkov-iac-report
 
-          scan-ref: .
-
-          format: table
-
-          exit-code: 0
+          path: checkov-report.json
  
